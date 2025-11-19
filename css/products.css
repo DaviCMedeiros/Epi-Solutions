@@ -1,0 +1,133 @@
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/*Nav Section*/
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 3em 0;
+  padding: 0 40px;
+  align-items: center;
+  height: 15vh;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  border: none;
+  background-color: #002147;
+}
+
+#logo {
+  font-size: 48px;
+  background-image: linear-gradient(to right, #fff 3%, #258ad2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 700;
+  line-height: 40px;
+}
+
+a {
+  color: rgba(255, 255, 255, 0.747);
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #59b8fb;
+  transition: width 0.3s;
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+a:hover {
+  color: rgb(255, 255, 255);
+}
+
+#navbar {
+  list-style: none;
+  display: flex;
+}
+
+#navbar li {
+  letter-spacing: 3px;
+  margin-left: 36px;
+  color: rgb(179, 179, 179);
+}
+
+/*Main*/
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+main h1{
+  font-size: 48px;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  color: #274365;
+}
+
+#cardsdiv {
+  display: flex;
+  justify-content: space-around;
+  gap: 90px;
+  margin-top: 32px;
+  margin-bottom: 20px;
+}
+
+.card{
+  background-color: #DBF0FF;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px 60px;
+  width: 300px;
+  text-align: left;
+}
+
+.alugarbtn {
+  background-color: #258AD2;
+  font-family: Poppins, sans-serif;
+  color: white;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 16px auto 0;
+  display: block;
+  transition: 0.5s;
+} 
+
+.alugarbtn:hover {
+  background-color: #1E6FB8;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #1E6FB8;
+}
+
+.alugarbtn:active {
+  background-color: #155A8F;
+  box-shadow: none;
+  transform: scale(0.9);
+}
+
+.cardimg {
+  width: auto;
+  height: 150px;
+} 
