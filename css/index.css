@@ -1,27 +1,54 @@
 * {
-  font-family: "Poppins" sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
 
-#background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  background-image: url("../img/background.png");
+#hero {
+  position: relative;
+  min-height: 100vh;
+  background-image: var(--bg-url);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  background-attachment: fixed;
+  isolation: isolate;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-image: var(--bg-url);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   filter: blur(7px);
   transform: scale(1.02);
-  background-color: rgba(0, 0, 0, 0.281);
+  z-index: -2;
+}
+
+#hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.445);
   background-blend-mode: multiply;
+  z-index: -1;
+}
+
+#hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 #main {
@@ -30,77 +57,46 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 65vh;
+  text-align: center;
+  padding: 0 20px;
 }
 
 #textmain {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: #fff;
   font-size: 48px;
   font-weight: 700;
-  text-align: center;
   letter-spacing: 1px;
-  line-height: 50px;
-  margin-bottom: 0;
+  line-height: 1.2;
+  margin-bottom: 20px;
 }
 
 #mainhr {
-  width: 35vw;
-  height: 3px;
+  border: 2px solid white;
+  border-radius: 5px;
+  width: 35em;
+  max-width: 90vw;
 }
-
-/*Nav Section*/
 
 nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 3em 0;
   padding: 0 40px;
   align-items: center;
   height: 15vh;
   user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   border: none;
 }
 
 #logo {
   font-size: 48px;
-  background-image: linear-gradient(to right, #fff 3%, #258ad2 100%);
+  background-image: linear-gradient(to right, #fff 3%, #258AD2 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   font-weight: 700;
   line-height: 40px;
-}
-
-a {
-  color: rgba(255, 255, 255, 0.747);
-  text-decoration: none;
-  transition: 0.3s;
-  font-size: 32px;
-  font-weight: 700;
-}
-
-a::after {
-  content: "";
-  display: block;
-  width: 0;
-  height: 3px;
-  background: #59b8fb;
-  transition: width 0.3s;
-}
-
-a:hover::after {
-  width: 100%;
-}
-
-a:hover {
-  color: rgb(255, 255, 255);
 }
 
 #navbar {
@@ -111,5 +107,211 @@ a:hover {
 #navbar li {
   letter-spacing: 3px;
   margin-left: 36px;
-  color: rgb(179, 179, 179);
+}
+
+#navbar a {
+  color: rgba(255, 255, 255, 0.747);
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+#navbar a::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #59B8FB;
+  transition: width 0.3s;
+}
+
+#navbar a:hover::after {
+  width: 100%;
+}
+
+#navbar a:hover {
+  color: rgb(255, 255, 255);
+}
+
+#beneficios,
+#produtos {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#beneficios {
+  background: white;
+  color: #258AD2;
+}
+
+#produtos {
+  background: #258AD2;
+  color: #ffff;
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 76px 0px;
+}
+
+#beneficios #cards,
+#produtos #cards {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 13em;
+  margin: 10px 30px;
+}
+
+.cardb {
+  padding: 30px;
+  border-radius: 10px;
+  width: 385px;
+  height: 511px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.253);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 155px;
+}
+
+.cardtext {
+  color: black;
+  font-size: 20px;
+  margin-top: 55px;
+}
+
+.titlecard {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.container {
+  border-radius: 10px;
+  width: 255px;
+  height: 317px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.253);
+  background-color: #DBF0FF;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 150px;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.container:hover {
+  transform: scale(1.1);
+}
+
+#button {
+  margin-left: 95em;
+  margin-top: 0;
+  padding: 20px;
+}
+
+.animated-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 36px;
+  border: 4px solid;
+  border-color: transparent;
+  font-size: 16px;
+  background-color: white;
+  border-radius: 100px;
+  font-weight: 600;
+  color: #1f387e;
+  box-shadow: 0 0 0 2px #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button svg {
+  position: absolute;
+  width: 24px;
+  fill: #1f387e;
+  z-index: 9;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .arr-1 {
+  right: 16px;
+}
+
+.animated-button .arr-2 {
+  left: -25%;
+}
+
+.animated-button .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: #c5e5e4;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button .text {
+  position: relative;
+  z-index: 1;
+  transform: translateX(-12px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.animated-button:hover {
+  box-shadow: 0 0 0 12px transparent;
+  color: #212121;
+  border-radius: 12px;
+}
+
+.animated-button:hover .arr-1 {
+  right: -25%;
+}
+
+.animated-button:hover .arr-2 {
+  left: 16px;
+}
+
+.animated-button:hover .text {
+  transform: translateX(12px);
+}
+
+.animated-button:hover svg {
+  fill: #1f387e;
+}
+
+.animated-button:active {
+  scale: 0.95;
+  box-shadow: 0 0 0 4px #2ba4fa;
+}
+
+.animated-button:hover .circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  #textmain {
+    font-size: 36px;
+    line-height: 1.1;
+  }
+
+  #mainhr {
+    width: 80vw;
+  }
 }
