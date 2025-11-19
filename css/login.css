@@ -62,7 +62,7 @@ input[type="text"], input[type="email"], input[type="password"]{
     font-size: 16px;
     font-family: Poppins, sans-serif;
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.27);
+    color: rgb(0, 0, 0);
 }
 
 input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{

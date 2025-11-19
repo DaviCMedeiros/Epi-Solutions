@@ -152,6 +152,7 @@ nav {
 #produtos {
   background: #258AD2;
   color: #ffff;
+  height: 85vh;
 }
 
 h1 {
@@ -168,6 +169,13 @@ h1 {
   justify-content: space-between;
   gap: 13em;
   margin: 10px 30px;
+}
+
+.products{
+  width: 300px;
+  height: 300px;
+  margin-bottom: 100px;
+  margin-top: 30px;
 }
 
 .cardb {
@@ -302,6 +310,14 @@ h1 {
   width: 220px;
   height: 220px;
   opacity: 1;
+}
+
+footer {
+  background-color: #151515;
+  color: white;
+  text-align: center;
+  padding: 1px;
+  font-size: 16px;
 }
 
 /* RESPONSIVO */
