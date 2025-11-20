@@ -97,7 +97,7 @@ main h1 {
   width: 260px;            
   height: 380px;          
   padding: 24px;
-  text-align: center;
+  text-align: left;
   display: flex;          
   flex-direction: column;  
   justify-content: space-between; 
@@ -134,3 +134,104 @@ main h1 {
   box-shadow: none;
   transform: scale(0.9);
 }
+
+.modal{
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1;
+}
+
+.modal.open {
+  z-index: 10;
+  opacity: 1;
+}
+
+.modal-inner {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  height: 500px;
+  width: 900px;
+  display: flex;
+  flex-direction: row;
+}
+
+#left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: center;
+  justify-content: center;
+}
+
+#left img {
+  width: 300px;
+  height: auto;
+}
+
+#right {
+  flex: 1;
+  padding: 0 20px;
+}
+
+#right h1 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #274365;
+}
+
+#right ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+#right ul li {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+#closeModal {
+  background-color: #258AD2;
+  font-family: Poppins, sans-serif;
+  color: white;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.5s;
+}
+
+#closeModal:hover {
+  background-color: #1E6FB8;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #1E6FB8;
+}
+
+#closeModal:active {
+  background-color: #155A8F;
+  box-shadow: none;
+  transform: scale(0.9);
+}
+
+#disponivel {
+  color: green;
+  font-weight: bold;
+}
+
+
+
