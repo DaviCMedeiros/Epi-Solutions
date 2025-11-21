@@ -12,6 +12,157 @@
       rel="stylesheet"
     />
     <title>Epi Solutions</title>
+    <style>
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      .modal.open {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-inner {
+        background-color: #fefefe;
+        padding: 30px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        display: flex;
+        gap: 30px;
+      }
+
+      #left {
+        flex: 1;
+      }
+
+      #left img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      #right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      #right h1 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 28px;
+      }
+
+      #right ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+      }
+
+      #right li {
+        margin-bottom: 10px;
+        font-size: 16px;
+      }
+
+      #disponivel {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .form-group {
+        margin: 15px 0;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .form-group input {
+        width: 100px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      #confirmar-aluguel {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        flex: 1;
+      }
+
+      #confirmar-aluguel:hover {
+        background-color: #218838;
+      }
+
+      #cancelar-aluguel {
+        background-color: #dc3545;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        flex: 1;
+      }
+
+      #cancelar-aluguel:hover {
+        background-color: #c82333;
+      }
+
+      .alugarbtn {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .alugarbtn:hover {
+        background-color: #0056b3;
+      }
+
+      .alugarbtn:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -26,13 +177,47 @@
         <li id="login-item">
           <a href="./login.html" id="login-link">Login</a>
           <span id="user-welcome" style="display: none;"></span>
-          <button id="logout-btn" style="cursor: pointer;"><img src="../img/icons8-x-24.png" alt=""></button>
+          <button id="logout-btn" style="cursor: pointer; display: none; background: none; border: none;">
+            <img src="../img/icons8-x-24.png" alt="Sair" width="20" height="20">
+          </button>
         </li>
       </ul>
     </nav>
+    
     <main>
       <h1>EPI's</h1>
+      
+      <!-- Modal único para todos os produtos -->
+      <div class="modal" id="modal">
+        <div class="modal-inner">
+          <div id="left">
+            <img id="modal-image" src="" alt="Produto">
+            <h3>Descrição</h3>
+            <p id="modal-descricao"></p>
+          </div>
+          <div id="right">
+            <h1 id="modal-titulo"></h1>
+            <ul>
+              <li>Status: <span id="modal-status">Disponível</span></li>
+              <li>Estoque: <strong id="modal-estoque">0</strong></li>
+              <li>Marca: <strong id="modal-marca"></strong></li>
+            </ul>
+            
+            <div class="form-group">
+              <label for="quantidade">Quantidade desejada:</label>
+              <input type="number" id="quantidade" min="1" value="1" max="1">
+            </div>
+            
+            <div class="modal-buttons">
+              <button id="confirmar-aluguel">Confirmar Aluguel</button>
+              <button id="cancelar-aluguel">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <section id="cardsdiv">
+        <!-- Produto 1 -->
         <div class="card">
           <img
             class="cardimg"
@@ -40,9 +225,18 @@
             alt="Luvas de proteção"
           />
           <h2>Luvas de proteção</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn" 
+                  data-id="1" 
+                  data-nome="Luvas de proteção" 
+                  data-imagem="../img/products/image 3.png"
+                  data-descricao="Luvas de proteção resistentes para trabalho pesado. Feitas com material durável que oferece proteção contra abrasões, cortes e produtos químicos. Confortáveis para uso prolongado."
+                  data-estoque="5"
+                  data-marca="SafetyPro">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 2 -->
         <div class="card">
           <img
             class="cardimg"
@@ -50,9 +244,18 @@
             alt="Óculos de proteção"
           />
           <h2>Óculos de proteção</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="2"
+                  data-nome="Óculos de proteção"
+                  data-imagem="../img/products/1051609_oculos-rio-de-janeiro-poli-fer-incolor-com-ajuste-ca-34082_z7_637359625064021680-removebg-preview 1.png"
+                  data-descricao="Óculos de proteção com lentes anti-risco e proteção UV. Design ergonômico que se adapta perfeitamente ao rosto, proporcionando conforto e segurança durante longos períodos de uso."
+                  data-estoque="3"
+                  data-marca="VisionGuard">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 3 -->
         <div class="card">
           <img
             class="cardimg"
@@ -60,9 +263,18 @@
             alt="Capacete de segurança"
           />
           <h2>Capacete de segurança</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="3"
+                  data-nome="Capacete de segurança"
+                  data-imagem="../img/products/capacete_msa_v_gard_com_jugular_c_a_498_cores_variadas_1571_1_a6203fb502562b465c3d3190cc391863-removebg-preview 2.png"
+                  data-descricao="Capacete de segurança com jugular ajustável. Oferece proteção contra impactos e perfurações. Material leve e resistente, ideal para construção civil e indústria."
+                  data-estoque="8"
+                  data-marca="HeadSafe">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 4 -->
         <div class="card">
           <img
             class="cardimg"
@@ -70,34 +282,20 @@
             alt="Luva anticorte"
           />
           <h2>Luva anticorte</h2>
-          <button class="alugarbtn" id="teste">Obter</button>
-
-          <div class="modal" id="modal">
-            <div class="modal-inner">
-              <div id="left">
-                <img
-                  src="../img/products/D_NQ_NP_2X_998845-MLB96488044463_102025-F-luva-anti-corte-proteco-maxima-resistncia-epi-profissional-removebg-preview 2.png"
-                  alt=""
-                />
-                <h3>Descrição</h3>
-                <p>A Luva é a escolha definitiva para profissionais que exigem máxima segurança e desempenho em ambientes de risco. Desenvolvida com tecnologia de ponta, ela oferece uma barreira robusta contra cortes, perfurações e abrasões, garantindo a integridade das suas mãos sem comprometer a destreza ou o conforto.</p>
-              </div>
-              <div id="right">
-                <h1>Luva Anti Corte</h1>
-                <ul>
-                  <li>Status: <span id="disponivel">Disponível</span></li>
-                  <li>Quantidade: <strong>2x</strong></li>
-                  <li>Marca: <strong>SuperSafety</strong></li>
-                </ul>
-                <button id="closeModal">Obter</button>
-              </div>
-              
-            </div>
-          </div>
+          <button class="alugarbtn"
+                  data-id="4"
+                  data-nome="Luva anticorte"
+                  data-imagem="../img/products/D_NQ_NP_2X_998845-MLB96488044463_102025-F-luva-anti-corte-proteco-maxima-resistncia-epi-profissional-removebg-preview 2.png"
+                  data-descricao="A Luva Anti Corte é a escolha definitiva para profissionais que exigem máxima segurança e desempenho em ambientes de risco. Desenvolvida com tecnologia de ponta, ela oferece uma barreira robusta contra cortes, perfurações e abrasões."
+                  data-estoque="2"
+                  data-marca="SuperSafety">
+            Obter
+          </button>
         </div>
       </section>
 
       <section id="cardsdiv">
+        <!-- Produto 5 -->
         <div class="card">
           <img
             class="cardimg"
@@ -105,9 +303,18 @@
             alt="Calçado de segurança"
           />
           <h2>Calçado de segurança</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="5"
+                  data-nome="Calçado de segurança"
+                  data-imagem="../img/products/SAPATO_SV62_CONFORTO_20220805-removebg-preview 2.png"
+                  data-descricao="Calçado de segurança com biqueira de aço e solado antiderrapante. Conforto garantido para longas jornadas de trabalho, com proteção contra impactos e escorregões."
+                  data-estoque="6"
+                  data-marca="FootGuard">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 6 -->
         <div class="card">
           <img
             class="cardimg"
@@ -115,9 +322,18 @@
             alt="Máscara respiratória PFF2"
           />
           <h2>Máscara respiratória PFF2</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="6"
+                  data-nome="Máscara respiratória PFF2"
+                  data-imagem="../img/products/1051947_mascara-respiratoria-pff2-com-valvula-pro-agro-delta-plus-ca-38503_z6_638252692832063519-removebg-preview 1.png"
+                  data-descricao="Máscara respiratória PFF2 com válvula de exalação. Oferece proteção eficiente contra partículas sólidas e líquidas. Certificada pelos órgãos competentes."
+                  data-estoque="10"
+                  data-marca="BreatheSafe">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 7 -->
         <div class="card">
           <img
             class="cardimg"
@@ -125,9 +341,18 @@
             alt="Abafador de ruído"
           />
           <h2>Abafador de ruído</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="7"
+                  data-nome="Abafador de ruído"
+                  data-imagem="../img/products/fone_de_ouvido-removebg-preview 1.png"
+                  data-descricao="Abafador de ruído com atenuação sonora superior. Design ajustável e confortável, ideal para ambientes industriais com alto nível de ruído."
+                  data-estoque="4"
+                  data-marca="SoundBlock">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 8 -->
         <div class="card">
           <img
             class="cardimg"
@@ -135,11 +360,20 @@
             alt="Bota impermeável"
           />
           <h2>Bota impermeável</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="8"
+                  data-nome="Bota impermeável"
+                  data-imagem="../img/products/bota_galocha-removebg-preview 1.png"
+                  data-descricao="Bota impermeável com proteção química e elétrica. Ideal para trabalhos em ambientes úmidos e com produtos químicos. Solado antiderrapante."
+                  data-estoque="7"
+                  data-marca="AquaSafe">
+            Obter
+          </button>
         </div>
       </section>
 
       <section id="cardsdiv">
+        <!-- Produto 9 -->
         <div class="card">
           <img
             class="cardimg"
@@ -147,9 +381,18 @@
             alt="Máscara de soldador"
           />
           <h2>Máscara de soldador</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="9"
+                  data-nome="Máscara de soldador"
+                  data-imagem="../img/products/soldador-removebg-preview (1) 1.png"
+                  data-descricao="Máscara de soldador com proteção automática. Lente com ajuste de tonalidade automático, protegendo contra radiação UV e IR. Confortável e de fácil operação."
+                  data-estoque="3"
+                  data-marca="WeldPro">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 10 -->
         <div class="card">
           <img
             class="cardimg"
@@ -157,9 +400,18 @@
             alt="Colete refletivo"
           />
           <h2>Colete refletivo</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="10"
+                  data-nome="Colete refletivo"
+                  data-imagem="../img/products/colete_1-removebg-preview 1.png"
+                  data-descricao="Colete refletivo de alta visibilidade. Material resistente às intempéries, com faixas reflexivas que garantem visibilidade em condições de pouca luz."
+                  data-estoque="12"
+                  data-marca="VisiSafe">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 11 -->
         <div class="card">
           <img
             class="cardimg"
@@ -167,30 +419,44 @@
             alt="Cinto de segurança"
           />
           <h2>Cinto de segurança</h2>
-          <button class="alugarbtn">Obter</button>
+          <button class="alugarbtn"
+                  data-id="11"
+                  data-nome="Cinto de segurança"
+                  data-imagem="../img/products/cinto-removebg-preview 1.png"
+                  data-descricao="Cinto de segurança para trabalho em altura. Sistema de talabarte integrado, mosquetão de aço e ajuste rápido. Atende às normas de segurança."
+                  data-estoque="5"
+                  data-marca="HeightSafe">
+            Obter
+          </button>
         </div>
 
+        <!-- Produto 12 -->
         <div class="card">
           <img
             class="cardimg"
             src="../img/products/Rectangle.png"
-            alt="Óculos de proteção"
+            alt="Protetor auricular"
           />
-          <h2>Óculos de proteção</h2>
-          <button class="alugarbtn">Obter</button>
+          <h2>Protetor auricular</h2>
+          <button class="alugarbtn"
+                  data-id="12"
+                  data-nome="Protetor auricular"
+                  data-imagem="../img/products/Rectangle.png"
+                  data-descricao="Protetor auricular descartável de alta performance. Confortável e hipoalergênico, ideal para proteção contra ruídos em diversos ambientes de trabalho."
+                  data-estoque="20"
+                  data-marca="EarSafe">
+            Obter
+          </button>
         </div>
       </section>
     </main>
+
     <script src="../js/modal.js"></script>
     <script>
       // Função para extrair apenas o primeiro nome
       function getFirstName(fullName) {
         if (!fullName) return '';
-        
-        // Remove espaços extras e divide o nome
         const names = fullName.trim().split(/\s+/);
-        
-        // Retorna o primeiro nome (primeira palavra)
         return names[0];
       }
 
@@ -205,45 +471,30 @@
 
         if (isLoggedIn === 'true' && userData) {
           const user = JSON.parse(userData);
-          console.log('Usuário logado:', user);
-          
-          // Extrair apenas o primeiro nome
           const firstName = getFirstName(user.nome);
-          console.log('Primeiro nome:', firstName);
           
-          // Esconder link de login
           if (loginLink) loginLink.style.display = 'none';
           
-          // Mostrar boas-vindas com apenas o primeiro nome
           if (userWelcome) {
             userWelcome.textContent = `Olá, ${firstName}`;
             userWelcome.style.display = 'inline';
             userWelcome.style.color = 'rgba(255, 255, 255, 0.747)';
             userWelcome.style.marginRight = '10px';
             userWelcome.style.fontFamily = "'Poppins', sans-serif";
-            userWelcome.style.fontSize = "32px"
+            userWelcome.style.fontSize = "32px";
             userWelcome.style.fontWeight = '700';
           }
           
-          // Mostrar botão de logout
-          if (logoutBtn) {
-            logoutBtn.style.display = 'inline';
-          }
-
-          // Ajustar o estilo do item de login
+          if (logoutBtn) logoutBtn.style.display = 'inline';
           if (loginItem) {
             loginItem.style.display = 'flex';
             loginItem.style.alignItems = 'center';
             loginItem.style.gap = '10px';
           }
         } else {
-          console.log('Usuário não está logado');
-          // Garantir que o login está visível
           if (loginLink) loginLink.style.display = 'inline';
           if (userWelcome) userWelcome.style.display = 'none';
           if (logoutBtn) logoutBtn.style.display = 'none';
-          
-          // Resetar estilo do item de login
           if (loginItem) {
             loginItem.style.display = '';
             loginItem.style.alignItems = '';
@@ -272,12 +523,128 @@
       document.addEventListener('DOMContentLoaded', function() {
         updateNavbar();
         setupLogout();
-        console.log('Página inicial carregada');
-        console.log('Status login:', localStorage.getItem('isLoggedIn'));
-        console.log('Usuário:', localStorage.getItem('user'));
+        
+        // Inicializar sistema de modal para todos os botões
+        const alugarBtns = document.querySelectorAll('.alugarbtn');
+        alugarBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const produto = {
+              id: this.getAttribute('data-id'),
+              nome: this.getAttribute('data-nome'),
+              imagem: this.getAttribute('data-imagem'),
+              descricao: this.getAttribute('data-descricao'),
+              estoque: parseInt(this.getAttribute('data-estoque')),
+              marca: this.getAttribute('data-marca')
+            };
+            
+            abrirModal(produto);
+          });
+        });
       });
 
-      // Atualizar também quando houver mudanças no storage (caso faça login em outra aba)
+      // Função para abrir modal
+      function abrirModal(produto) {
+        document.getElementById('modal-image').src = produto.imagem;
+        document.getElementById('modal-titulo').textContent = produto.nome;
+        document.getElementById('modal-descricao').textContent = produto.descricao;
+        document.getElementById('modal-estoque').textContent = produto.estoque;
+        document.getElementById('modal-marca').textContent = produto.marca;
+        
+        const statusElement = document.getElementById('modal-status');
+        if (produto.estoque > 0) {
+          statusElement.textContent = 'Disponível';
+          statusElement.style.color = '#28a745';
+        } else {
+          statusElement.textContent = 'Esgotado';
+          statusElement.style.color = '#dc3545';
+        }
+        
+        const quantidadeInput = document.getElementById('quantidade');
+        quantidadeInput.max = produto.estoque;
+        quantidadeInput.value = 1;
+        
+        document.getElementById('modal').classList.add('open');
+        
+        // Armazenar produto atual para uso no aluguel
+        window.produtoAtual = produto;
+      }
+
+      // Fechar modal
+      document.getElementById('cancelar-aluguel').addEventListener('click', function() {
+        document.getElementById('modal').classList.remove('open');
+      });
+
+      // Fechar modal clicando fora
+      document.getElementById('modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('open');
+        }
+      });
+
+      // Confirmar aluguel
+      document.getElementById('confirmar-aluguel').addEventListener('click', async function() {
+        if (!window.produtoAtual) return;
+        
+        const quantidade = parseInt(document.getElementById('quantidade').value);
+        const estoqueAtual = window.produtoAtual.estoque;
+        
+        if (quantidade < 1 || quantidade > estoqueAtual) {
+          alert('Quantidade inválida!');
+          return;
+        }
+
+        try {
+          const isLoggedIn = localStorage.getItem('isLoggedIn');
+          const userData = localStorage.getItem('user');
+          
+          if (!isLoggedIn || !userData) {
+            alert('Você precisa estar logado para alugar produtos!');
+            window.location.href = '/login';
+            return;
+          }
+
+          const user = JSON.parse(userData);
+          
+          const response = await fetch('/api/alugar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id_produto: window.produtoAtual.id,
+              id_usuario: user.id,
+              quantidade: quantidade
+            })
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            alert('Produto alugado com sucesso!');
+            
+            // Atualizar estoque na interface
+            const novoEstoque = data.novo_estoque;
+            window.produtoAtual.estoque = novoEstoque;
+            
+            // Atualizar botão do produto
+            const btn = document.querySelector(`.alugarbtn[data-id="${window.produtoAtual.id}"]`);
+            if (btn) {
+              btn.setAttribute('data-estoque', novoEstoque);
+              if (novoEstoque === 0) {
+                btn.textContent = 'Esgotado';
+                btn.disabled = true;
+              }
+            }
+            
+            document.getElementById('modal').classList.remove('open');
+          } else {
+            alert(data.message || 'Erro ao alugar produto.');
+          }
+        } catch (error) {
+          console.error('Erro ao alugar produto:', error);
+          alert('Erro ao conectar com o servidor.');
+        }
+      });
+
+      // Atualizar também quando houver mudanças no storage
       window.addEventListener('storage', function(e) {
         if (e.key === 'isLoggedIn' || e.key === 'user') {
           updateNavbar();

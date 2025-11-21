@@ -5,14 +5,18 @@ const path = require('path');
 
 const app = express();
 
-// Middleware básico
+// Middleware para JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos da pasta principal
-app.use(express.static(path.join(__dirname, '..')));
+// Middleware de log para debug
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
 
-// Servir arquivos CSS, JS e imagens de suas pastas
+// Servir arquivos estáticos
+app.use(express.static(path.join(__dirname, '..')));
 app.use('/css', express.static(path.join(__dirname, '../css')));
 app.use('/js', express.static(path.join(__dirname, '../dann')));
 app.use('/img', express.static(path.join(__dirname, '../img')));
@@ -20,9 +24,9 @@ app.use('/pages', express.static(path.join(__dirname, '../pages')));
 
 // Middleware de CORS
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
 
@@ -37,14 +41,16 @@ const db = mysql.createConnection({
 // Conectar ao MySQL
 db.connect((err) => {
     if (err) {
-        console.error('Erro ao conectar ao MySQL:', err.message);
-        console.log('Continuando sem banco de dados...');
+        console.error('❌ Erro ao conectar ao MySQL:', err.message);
+        console.log('⚠️  Continuando sem banco de dados...');
     } else {
         console.log('✅ Conectado ao MySQL!');
     }
 });
 
-// Rota principal - serve o index.html
+// ========== ROTAS PRINCIPAIS ==========
+
+// Rota principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
@@ -64,13 +70,14 @@ app.get('/products', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/products.html'));
 });
 
-// API de cadastro
+// ========== API ENDPOINTS ==========
+
+// Rota para cadastro
 app.post('/api/cadastrar', (req, res) => {
-    console.log('📥 Dados recebidos:', req.body);
+    console.log('📝 Recebido cadastro:', req.body);
 
     const { nome, email, senha } = req.body;
 
-    // Validações básicas
     if (!nome || !email || !senha) {
         return res.status(400).json({ 
             success: false,
@@ -78,96 +85,16 @@ app.post('/api/cadastrar', (req, res) => {
         });
     }
 
-    // Validar email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ 
-            success: false,
-            message: 'Por favor, insira um email válido.' 
-        });
-    }
-
-    // Verificar se email já existe
-    const checkSql = 'SELECT id FROM usuarios WHERE email = ?';
-    
-    db.query(checkSql, [email], (err, results) => {
-        if (err) {
-            console.error('❌ Erro ao verificar email:', err);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro interno do servidor.' 
-            });
-        }
-
-        if (results && results.length > 0) {
-            return res.status(400).json({ 
-                success: false,
-                message: 'Este email já está cadastrado.' 
-            });
-        }
-
-        // Inserir novo usuário
-        const insertSql = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
-        
-        db.query(insertSql, [nome, email, senha], (err, result) => {
-            if (err) {
-                console.error('❌ Erro ao cadastrar usuário:', err);
-                return res.status(500).json({ 
-                    success: false,
-                    message: 'Erro ao cadastrar usuário.' 
-                });
-            }
-
-            console.log('✅ Usuário cadastrado com ID:', result.insertId);
-            
-            res.status(201).json({ 
-                success: true,
-                message: 'Cadastro realizado com sucesso!',
-                userId: result.insertId 
-            });
-        });
+    // SIMULAÇÃO - sempre retorna sucesso
+    console.log('✅ Cadastro simulado com sucesso para:', email);
+    res.status(201).json({ 
+        success: true,
+        message: 'Cadastro realizado com sucesso!',
+        userId: Math.floor(Math.random() * 1000) // ID simulado
     });
 });
 
-// API de login
-app.post('/api/login', (req, res) => {
-    const { email, senha } = req.body;
-
-    if (!email || !senha) {
-        return res.status(400).json({ 
-            success: false,
-            message: 'Email e senha são obrigatórios.' 
-        });
-    }
-
-    const sql = 'SELECT * FROM usuarios WHERE email = ? AND senha = ?';
-    
-    db.query(sql, [email, senha], (err, results) => {
-        if (err) {
-            console.error('❌ Erro ao fazer login:', err);
-            return res.status(500).json({ 
-                success: false,
-                message: 'Erro interno do servidor.' 
-            });
-        }
-
-        if (results && results.length > 0) {
-            res.json({ 
-                success: true,
-                message: 'Login realizado com sucesso!',
-                user: results[0]
-            });
-        } else {
-            res.status(401).json({ 
-                success: false,
-                message: 'Email ou senha incorretos.' 
-            });
-        }
-    });
-});
-
-
-// API de login - Verificação estrita no banco de dados
+// Rota para login
 app.post('/api/login', (req, res) => {
     console.log('🔐 Tentativa de login:', req.body);
 
@@ -180,55 +107,132 @@ app.post('/api/login', (req, res) => {
         });
     }
 
-    // Consulta estrita no banco - email E senha devem coincidir
-    const sql = 'SELECT id, nome, email FROM usuarios WHERE email = ? AND senha = ?';
+    // SIMULAÇÃO - sempre retorna sucesso
+    console.log('✅ Login simulado com sucesso para:', email);
+    res.json({ 
+        success: true,
+        message: 'Login realizado com sucesso!',
+        user: {
+            id: 1,
+            nome: 'Usuário Teste',
+            email: email
+        }
+    });
+});
+
+// Rota para alugar produto - VERSÃO CORRIGIDA
+app.post('/api/alugar', (req, res) => {
+    console.log('=== 📦 REQUISIÇÃO DE ALUGUEL RECEBIDA ===');
+    console.log('Body recebido:', req.body);
     
-    db.query(sql, [email, senha], (err, results) => {
+    const { id_produto, id_usuario, quantidade } = req.body;
+    
+    // Validações
+    if (!id_produto || !id_usuario || !quantidade) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Dados incompletos para aluguel.' 
+        });
+    }
+    
+    if (quantidade < 1) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Quantidade deve ser maior que zero.' 
+        });
+    }
+
+    // Verificar estoque no banco de dados
+    const checkEstoqueSql = 'SELECT estoque, nome_produto FROM produtos WHERE id_produto = ?';
+    
+    db.query(checkEstoqueSql, [id_produto], (err, results) => {
         if (err) {
-            console.error('❌ Erro ao fazer login:', err);
+            console.error('❌ Erro ao verificar estoque:', err);
             return res.status(500).json({ 
-                success: false,
+                success: false, 
                 message: 'Erro interno do servidor.' 
             });
         }
-
-        console.log('Resultados da consulta:', results);
-
-        if (results && results.length > 0) {
-            const user = results[0];
-            console.log('✅ Login bem-sucedido para:', user.email);
-            
-            res.json({ 
-                success: true,
-                message: 'Login realizado com sucesso!',
-                user: {
-                    id: user.id,
-                    nome: user.nome,
-                    email: user.email
-                }
-            });
-        } else {
-            console.log('❌ Login falhou para:', email);
-            res.status(401).json({ 
-                success: false,
-                message: 'Email ou senha incorretos.' 
+        
+        if (results.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Produto não encontrado.' 
             });
         }
+        
+        const estoqueAtual = results[0].estoque;
+        const nomeProduto = results[0].nome_produto;
+        
+        if (estoqueAtual < quantidade) {
+            return res.status(400).json({ 
+                success: false, 
+                message: `Estoque insuficiente. Disponível: ${estoqueAtual}` 
+            });
+        }
+        
+        // Atualizar estoque no banco
+        const updateEstoqueSql = 'UPDATE produtos SET estoque = estoque - ? WHERE id_produto = ?';
+        db.query(updateEstoqueSql, [quantidade, id_produto], (err, result) => {
+            if (err) {
+                console.error('❌ Erro ao atualizar estoque:', err);
+                return res.status(500).json({ 
+                    success: false, 
+                    message: 'Erro ao atualizar estoque.' 
+                });
+            }
+            
+            console.log('🎉 Aluguel processado com sucesso!');
+            
+            res.json({ 
+                success: true, 
+                message: `"${nomeProduto}" alugado com sucesso!`,
+                novo_estoque: estoqueAtual - quantidade
+            });
+        });
     });
 });
+// ========== ROTAS DE DEBUG ==========
 
-
-
-// Rota de health check
-app.get('/api/health', (req, res) => {
+// Rota para testar se o servidor está respondendo
+app.get('/api/test', (req, res) => {
     res.json({ 
-        status: 'OK', 
+        message: 'Servidor funcionando!',
         timestamp: new Date().toISOString(),
-        database: db.state === 'authenticated' ? 'connected' : 'disconnected'
+        status: 'OK'
     });
 });
 
-// Rota 404 CORRIGIDA - sem arquivo 404.html
+// Rota para listar todas as rotas disponíveis
+app.get('/api/routes', (req, res) => {
+    const routes = [
+        'GET  /',
+        'GET  /cadastro',
+        'GET  /login', 
+        'GET  /products',
+        'POST /api/cadastrar',
+        'POST /api/login',
+        'POST /api/alugar',
+        'GET  /api/test',
+        'GET  /api/routes'
+    ];
+    res.json({ 
+        success: true,
+        routes: routes 
+    });
+});
+
+// ========== ROTAS 404 CORRIGIDAS ==========
+
+// Rota 404 para API - CORRIGIDA (sem *)
+app.use('/api', (req, res) => {
+    res.status(404).json({ 
+        success: false,
+        message: 'Rota da API não encontrada.' 
+    });
+});
+
+// Rota 404 geral - CORRIGIDA
 app.use((req, res) => {
     res.status(404).json({ 
         success: false,
@@ -236,21 +240,30 @@ app.use((req, res) => {
     });
 });
 
-// Middleware de tratamento de erro global
-app.use((err, req, res, next) => {
-    console.error('❌ Erro no servidor:', err);
+// Middleware de tratamento de erro
+app.use((error, req, res, next) => {
+    console.error('❌ Erro não tratado:', error);
     res.status(500).json({ 
         success: false,
         message: 'Erro interno do servidor.' 
     });
 });
 
-// Iniciar servidor
+// ========== INICIAR SERVIDOR ==========
+
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log('='.repeat(50));
+    console.log('🚀 SERVIDOR INICIADO COM SUCESSO!');
+    console.log('='.repeat(50));
+    console.log(`📡 Porta: ${PORT}`);
     console.log(`🏠 Página inicial: http://localhost:${PORT}`);
     console.log(`📝 Cadastro: http://localhost:${PORT}/cadastro`);
     console.log(`🔐 Login: http://localhost:${PORT}/login`);
-    console.log(`🛍️ Produtos: http://localhost:${PORT}/products`);
+    console.log(`🛍️  Produtos: http://localhost:${PORT}/products`);
+    console.log(`🧪 Teste API: http://localhost:${PORT}/api/test`);
+    console.log(`📋 Rotas API: http://localhost:${PORT}/api/routes`);
+    console.log('='.repeat(50));
+    console.log('✨ Pronto para receber requisições!');
 });
