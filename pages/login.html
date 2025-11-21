@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR' ">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/login.css">
-     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <title>Login - EPI Solutions</title>
 </head>
 <body>
   <section id="left">
@@ -15,14 +15,20 @@
 
   <section id="right">
     <h2>Login</h2>
-    <form action="">
-      <input type="email" id="email" name="email" placeholder="Digite seu email"><br>
+    
+    <!-- Adicionando elemento para mostrar erro -->
+    <div id="login-error" style="display: none; color: red; margin-bottom: 15px; padding: 10px; background: #ffe6e6; border-radius: 5px;"></div>
+    
+    <form id="login-form">
+      <input type="email" id="email" name="email" placeholder="Digite seu email" required><br>
 
-      <input type="password" id="password" name="password" placeholder="Digite sua senha"><br>
+      <input type="password" id="password" name="password" placeholder="Digite sua senha" required><br>
 
       <input type="submit" value="Entrar">
     </form>
     <p><a href="./cadastro.html">Ainda não sou cadastrado!</a></p>
   </section>
+
+  <script src="/js/login.js"></script>
 </body>
 </html>
