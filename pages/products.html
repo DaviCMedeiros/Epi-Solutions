@@ -23,7 +23,11 @@
       <ul id="navbar">
         <li><a href="../index.html">Início</a></li>
         <li><a href="products.html">Produtos</a></li>
-        <li><a href="./login.html">Login</a></li>
+        <li id="login-item">
+          <a href="./login.html" id="login-link">Login</a>
+          <span id="user-welcome" style="display: none;"></span>
+          <button id="logout-btn" style="cursor: pointer;"><img src="../img/icons8-x-24.png" alt=""></button>
+        </li>
       </ul>
     </nav>
     <main>
@@ -145,5 +149,107 @@
         </div>
       </section>
     </main>
+    <script>
+      // Função para extrair apenas o primeiro nome
+      function getFirstName(fullName) {
+        if (!fullName) return '';
+        
+        // Remove espaços extras e divide o nome
+        const names = fullName.trim().split(/\s+/);
+        
+        // Retorna o primeiro nome (primeira palavra)
+        return names[0];
+      }
+
+      // Verificar se o usuário está logado e atualizar a navbar
+      function updateNavbar() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userData = localStorage.getItem('user');
+        const loginLink = document.getElementById('login-link');
+        const userWelcome = document.getElementById('user-welcome');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginItem = document.getElementById('login-item');
+
+        if (isLoggedIn === 'true' && userData) {
+          const user = JSON.parse(userData);
+          console.log('Usuário logado:', user);
+          
+          // Extrair apenas o primeiro nome
+          const firstName = getFirstName(user.nome);
+          console.log('Primeiro nome:', firstName);
+          
+          // Esconder link de login
+          if (loginLink) loginLink.style.display = 'none';
+          
+          // Mostrar boas-vindas com apenas o primeiro nome
+          if (userWelcome) {
+            userWelcome.textContent = `Olá, ${firstName}`;
+            userWelcome.style.display = 'inline';
+            userWelcome.style.color = 'rgba(255, 255, 255, 0.747)';
+            userWelcome.style.marginRight = '10px';
+            userWelcome.style.fontFamily = "'Poppins', sans-serif";
+            userWelcome.style.fontSize = "32px"
+            userWelcome.style.fontWeight = '700';
+          }
+          
+          // Mostrar botão de logout
+          if (logoutBtn) {
+            logoutBtn.style.display = 'inline';
+          }
+
+          // Ajustar o estilo do item de login
+          if (loginItem) {
+            loginItem.style.display = 'flex';
+            loginItem.style.alignItems = 'center';
+            loginItem.style.gap = '10px';
+          }
+        } else {
+          console.log('Usuário não está logado');
+          // Garantir que o login está visível
+          if (loginLink) loginLink.style.display = 'inline';
+          if (userWelcome) userWelcome.style.display = 'none';
+          if (logoutBtn) logoutBtn.style.display = 'none';
+          
+          // Resetar estilo do item de login
+          if (loginItem) {
+            loginItem.style.display = '';
+            loginItem.style.alignItems = '';
+            loginItem.style.gap = '';
+          }
+        }
+      }
+
+      // Função de logout
+      function setupLogout() {
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function() {
+            if (confirm('Deseja realmente sair?')) {
+              localStorage.removeItem('user');
+              localStorage.removeItem('isLoggedIn');
+              alert('Logout realizado com sucesso!');
+              updateNavbar();
+              window.location.href = '/';
+            }
+          });
+        }
+      }
+
+      // Quando a página carregar
+      document.addEventListener('DOMContentLoaded', function() {
+        updateNavbar();
+        setupLogout();
+        console.log('Página inicial carregada');
+        console.log('Status login:', localStorage.getItem('isLoggedIn'));
+        console.log('Usuário:', localStorage.getItem('user'));
+      });
+
+      // Atualizar também quando houver mudanças no storage (caso faça login em outra aba)
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'isLoggedIn' || e.key === 'user') {
+          updateNavbar();
+        }
+      });
+    </script>
   </body>
 </html>
