@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '', // Coloque sua senha aqui se tiver
+    password: '', // se tiver
     database: 'epi_solution'
 });
 
@@ -224,7 +224,7 @@ app.get('/api/routes', (req, res) => {
 
 // ========== ROTAS 404 CORRIGIDAS ==========
 
-// Rota 404 para API - CORRIGIDA (sem *)
+// Rota 404 para API
 app.use('/api', (req, res) => {
     res.status(404).json({ 
         success: false,
@@ -232,7 +232,7 @@ app.use('/api', (req, res) => {
     });
 });
 
-// Rota 404 geral - CORRIGIDA
+// Rota 404 geral
 app.use((req, res) => {
     res.status(404).json({ 
         success: false,

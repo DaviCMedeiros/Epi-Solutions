@@ -212,6 +212,7 @@ h1 {
   align-items: center;
   justify-content: center;
   transition: 0.3s;
+  cursor: default;
 }
 
 .container:hover {
